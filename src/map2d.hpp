@@ -1,2 +1,0 @@
-class map2d {
-}
