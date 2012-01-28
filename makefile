@@ -34,7 +34,7 @@ RESOURCESDIR=resources
 # 'make' looks for objects in the directories specified by VPATH
 VPATH=$(SRCDIR);$(OBJDIR);$(BINDIR)
 
-OBJECTS=main.o
+OBJECTS=main.o bounding_box.o
 EXECUTABLE=demo2d.exe
 
 all: $(EXECUTABLE)
@@ -43,7 +43,7 @@ $(EXECUTABLE): $(OBJECTS)
 	$(CC) -o $(BINDIR)\$(EXECUTABLE) $(OBJECTS) $(A5LINKFLAGS) $(WIN32LINKFLAGS)
 
 #header file dependencies
-#main.o: game.hpp
+main.o: bounding_box.hpp
 
 dist: $(EXECUTABLE)
 	$(MKDIR) $(DISTDIR)
