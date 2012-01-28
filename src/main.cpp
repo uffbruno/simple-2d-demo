@@ -27,7 +27,10 @@ int main() {
     
     bounding_box bb2(300, 300, 30, 30, 0, 0);
     bb2.set_color(al_map_rgb(255, 255, 0));
-        
+    
+    bounding_box bb3(380, 300, 30, 30, 0, 0);
+    bb3.set_color(al_map_rgb(255, 255, 0));
+    
     while (!exit) {
         ALLEGRO_EVENT event;
         al_wait_for_event(event_queue, &event);
@@ -49,6 +52,7 @@ int main() {
         if (event.type == ALLEGRO_EVENT_TIMER) {
             bb.update();
             bb.handle_collide(bb2);
+            bb.handle_collide(bb3);
             
             redraw = true;
         }
@@ -57,6 +61,7 @@ int main() {
             al_clear_to_color(al_map_rgb(0,0,0));
             bb.draw();
             bb2.draw(); 
+            bb3.draw();
             al_flip_display();
             redraw = false;
         }

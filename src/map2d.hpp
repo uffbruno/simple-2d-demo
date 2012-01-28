@@ -1,0 +1,2 @@
+class map2d {
+}
