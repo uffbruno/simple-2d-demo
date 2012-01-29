@@ -37,12 +37,12 @@ class bounding_box {
         float right() const  { return center.x + w/2; }
         float bottom() const { return center.y + h/2; }
 
-        void draw();
+        void draw() const;
         void update();
         void handle_input(ALLEGRO_EVENT& ev);
         void set_color(ALLEGRO_COLOR color) { this->color = color; }
         
-        void handle_collide(const bounding_box& other);
+        void handle_collide(const bounding_box* other);
     
     private:
         vector_2d center;
@@ -56,7 +56,7 @@ class bounding_box {
         ALLEGRO_COLOR color;
         bb_state state;
         
-        bool collide(const bounding_box& other, vector_2d& normal) const;
+        bool collide(const bounding_box* other, vector_2d& normal) const;
         bounding_box(const bounding_box& other);
         bounding_box& operator=(const bounding_box& other);
 };

@@ -13,7 +13,7 @@ bounding_box::bounding_box(float x, float y, float w, float h, float speedx, flo
 bounding_box::~bounding_box() {
 }
 
-void bounding_box::draw() {
+void bounding_box::draw() const {
     al_draw_rectangle(left(), top(), right(), bottom(), color, 0);
 }
 
@@ -32,7 +32,7 @@ void bounding_box::update() {
     
     if (keys[KEY_UP]) { //jump
         if (state != STATE_INAIR) {
-            speed.y = -4;
+            speed.y = -7;
             state = STATE_INAIR;
         }
     } 
@@ -46,7 +46,8 @@ void bounding_box::update() {
     }
 }
 
-void bounding_box::handle_collide(const bounding_box& other) {
+void bounding_box::handle_collide(const bounding_box* other) {
+    if (other == NULL) return;
     vector_2d normal(0,0);
     if (this->collide(other, normal)) {
         //push this box out of the other one)
@@ -69,7 +70,8 @@ indicated with the [NO UNDERSTAND!!!] but i guess this works fine. :-)
 All comments on this algorithm were made by N64vSNES on his thread post (link above).
 
 -------------------------------------------------------------------------------------------------*/
-bool bounding_box::collide(const bounding_box& other, vector_2d& normal) const {
+bool bounding_box::collide(const bounding_box* other, vector_2d& normal) const {
+    if (other == NULL) return false;
     // The distance between the two objects
     vector_2d distance(0,0);
    
@@ -77,12 +79,12 @@ bool bounding_box::collide(const bounding_box& other, vector_2d& normal) const {
     vector_2d abs_distance(0,0);
 
     // Calculate the distance between A and B
-    distance.x = other.center.x - this->center.x;
-    distance.y = other.center.y - this->center.y;
+    distance.x = other->center.x - this->center.x;
+    distance.y = other->center.y - this->center.y;
 
     // Combine both rectangles and half the returned value
-    float xadd = (other.w + this->w) / 2.0f;
-    float yadd = (other.h + this->h) / 2.0f;
+    float xadd = (other->w + this->w) / 2.0f;
+    float yadd = (other->h + this->h) / 2.0f;
 
     // Get absolute value of distance vector.
     abs_distance.x = (distance.x < 0.0f) ? -distance.x : distance.x;

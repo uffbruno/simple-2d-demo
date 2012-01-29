@@ -1,6 +1,7 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
 
+#include "map2d.hpp"
 #include "bounding_box.hpp"
 
 int main() {
@@ -9,7 +10,7 @@ int main() {
     al_init_primitives_addon();
     
     //acquire allegro resources
-    ALLEGRO_DISPLAY *display = al_create_display(640,480);
+    ALLEGRO_DISPLAY *display = al_create_display(500, 500);
     ALLEGRO_TIMER *timer = al_create_timer(1.0/60);
     ALLEGRO_EVENT_QUEUE *event_queue = al_create_event_queue();
     
@@ -25,11 +26,7 @@ int main() {
     bounding_box bb(300, 0, 30, 30, 2, 0);
     bb.set_color(al_map_rgb(255,255,255));
     
-    bounding_box bb2(300, 300, 30, 30, 0, 0);
-    bb2.set_color(al_map_rgb(255, 255, 0));
-    
-    bounding_box bb3(380, 300, 30, 30, 0, 0);
-    bb3.set_color(al_map_rgb(255, 255, 0));
+    map2d mymap("resources//map.txt");
     
     while (!exit) {
         ALLEGRO_EVENT event;
@@ -51,17 +48,17 @@ int main() {
         
         if (event.type == ALLEGRO_EVENT_TIMER) {
             bb.update();
-            bb.handle_collide(bb2);
-            bb.handle_collide(bb3);
-            
+            mymap.check_collision_with(bb);
+             
             redraw = true;
         }
         
         if (redraw && al_is_event_queue_empty(event_queue)) {
             al_clear_to_color(al_map_rgb(0,0,0));
+            
             bb.draw();
-            bb2.draw(); 
-            bb3.draw();
+            mymap.draw();
+            
             al_flip_display();
             redraw = false;
         }
