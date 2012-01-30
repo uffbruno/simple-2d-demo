@@ -1,0 +1,29 @@
+
+
+# CHAR2D_STILL_LEFT,
+frames//3.PNG
+.
+
+# CHAR2D_STILL_RIGHT,
+frames//1.PNG
+.
+
+
+# CHAR2D_WALKING_LEFT,
+frames//3.PNG
+frames//4.PNG
+.
+
+
+# CHAR2D_WALKING_RIGHT,
+frames//1.PNG
+frames//2.PNG
+.
+
+# CHAR2D_JUMPING_LEFT
+frames//7.PNG
+.
+
+# CHAR2D_JUMPING_RIGHT
+frames//8.PNG
+.

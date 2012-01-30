@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "map2d.hpp"
+#include "char_2d.hpp"
 
 map2d::map2d(const std::string& filename): cells(max_rows * max_cols) {
     std::ifstream file(filename.c_str());
@@ -12,17 +13,14 @@ map2d::map2d(const std::string& filename): cells(max_rows * max_cols) {
     
     std::string line;
     
-    int pos_x = 0;
-    int pos_y = 0;
+    float pos_x = 0;
+    float pos_y = 0;
     while (std::getline(file, line)) {
         for (unsigned int i = 0; i < line.size(); ++i) {
             if (line[i] == '#') {
-                bounding_box *bb = new bounding_box(pos_x, pos_y, 
-                    cell_size, cell_size, 0, 0);
-                bb->set_color(al_map_rgb(0, 255, 0));
-                cells.push_back(bb);
-            } else {
-                cells.push_back(NULL);
+                character *c = new char_2d(pos_x, pos_y, 0, 0, "resources//map");
+                c->init();
+                cells.push_back(c);
             }
             pos_x += cell_size;
         }
@@ -41,28 +39,20 @@ map2d::~map2d() {
     }
 }
 
-bounding_box* map2d::get_cell(int row, int col) const{
-    unsigned int id = row * max_cols + col;
-    if (id >= cells.size()) {
-        std::cout << "get_cell: invalid cell id in map 2d: " << id << std::endl;
-        return NULL;
-    }
-    return cells.at(id);
-}
-
-void map2d::set_cell(int row, int col, bounding_box *bb) {
-    unsigned int id = row * max_cols + col;
+void map2d::set_cell(unsigned int id, character *c) {
     if (id >= cells.size()) {
         std::cout << "set_cell: invalid cell id in map 2d: " << id << std::endl;
     } else if (cells.at(id) != NULL) {
         delete cells[id];
-        cells[id] = bb;
+        cells[id] = c;
     }
 }
 
-void map2d::check_collision_with(bounding_box& bb) {
+void map2d::check_collision_with(character *c) {
+	if (c == NULL) return;
+
     for (unsigned int i = 0; i < cells.size(); ++i) {
-        bb.handle_collide(cells[i]);
+        c->handle_collision(cells[i]);
     }
 }
 

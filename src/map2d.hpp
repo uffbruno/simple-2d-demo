@@ -4,16 +4,16 @@
 #include <vector>
 #include <string>
 
-#include "bounding_box.hpp"
+#include "character.hpp"
 
 const int cell_size = 32;
 const int max_rows = 15;
 const int max_cols = 15;
 
-typedef std::vector<bounding_box*> cell_collection;
+typedef std::vector<character*> cell_collection;
 
 enum cell_id {
-    CELL_NONE = ' ',
+    CELL_NONE = '_',
     CELL_BLOCK = '#'
 };
 
@@ -24,9 +24,8 @@ class map2d {
         map2d(const std::string& filename);
         ~map2d();
         
-        bounding_box* get_cell(int row, int column) const;
-        void set_cell(int row, int column, bounding_box* bb);
-        void check_collision_with(bounding_box& bb);
+        void set_cell(unsigned int id, character* bb);
+        void check_collision_with(character* bb);
         void draw() const;
     
     private:

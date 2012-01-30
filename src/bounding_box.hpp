@@ -2,61 +2,40 @@
 #define BOUNDING_BOX_HPP
 
 #include <allegro5/allegro.h>
-enum keycodes {
-    KEY_UP,
-    KEY_DOWN,
-    KEY_LEFT,
-    KEY_RIGHT
-};
 
-typedef enum keycodes keycodes;
-
-enum bb_state {
-    STATE_INAIR,
-    STATE_STANDING
-};
-
-typedef enum bb_state bb_state;
-
-struct vector_2d {
-    float x;
-    float y;
-    vector_2d(float x, float y): x(x), y(y) {
-    }
-};
-
-typedef struct vector_2d vector_2d;
+#include "vector2d.hpp" 
 
 class bounding_box {
     public:
-        bounding_box(float x, float y, float w, float h, float speedx, float speedy);
+        bounding_box(float x, float y, float w, float h);
         ~bounding_box();
         
         float left() const   { return center.x - w/2; }
         float top() const    { return center.y - h/2; }
         float right() const  { return center.x + w/2; }
         float bottom() const { return center.y + h/2; }
+        
+        void set_x(float x) { center.x = x; }
+        void set_y(float y) { center.y = y; }
+        
+        float get_x() { return center.x; }
+        float get_y() { return center.y; }
+		float get_w() { return w; }
+		float get_h() { return h; }
 
         void draw() const;
         void update();
-        void handle_input(ALLEGRO_EVENT& ev);
         void set_color(ALLEGRO_COLOR color) { this->color = color; }
         
-        void handle_collide(const bounding_box* other);
-    
-    private:
-        vector_2d center;
-        vector_2d speed;
+        bool collide(const bounding_box* other, vector2d& normal) const;
 
+    private:
+        vector2d center;
+		
         float w;
         float h;
- 
-        bool keys[4];
-        
+      
         ALLEGRO_COLOR color;
-        bb_state state;
-        
-        bool collide(const bounding_box* other, vector_2d& normal) const;
         bounding_box(const bounding_box& other);
         bounding_box& operator=(const bounding_box& other);
 };
