@@ -9,7 +9,12 @@ CPPFLAGS=-Wall -Wextra -pedantic -Weffc++ -Werror -g
 A5LINKFLAGS=-lallegro-static -lallegro_font-static -lallegro_ttf-static -lallegro_image-static -lallegro_primitives-static
 WIN32LINKFLAGS=-lopengl32 -lwinmm -luuid -lgdiplus -lfreetype -lole32 -lgdi32 -lkernel32 -lpsapi -lshlwapi -static-libgcc -static-libstdc++
 
-#some DOS commands
+#for my simple game lib
+SGLIBFLAGS=-lsglib
+INCLUDES=../sglib/src/
+LIBS=../sglib/
+
+#some shell commands
 RM=rm
 RMDIR=rmdir
 MKDIR=mkdir
@@ -34,20 +39,16 @@ RESOURCESDIR=resources
 # 'make' looks for objects in the directories specified by VPATH
 VPATH=$(SRCDIR);$(OBJDIR);$(BINDIR)
 
-OBJECTS=main.o bounding_box.o map2d.o animation.o sprite.o character.o char_2d.o
+OBJECTS=main.o
 EXECUTABLE=demo2d.exe
 
 all: $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) -o $(BINDIR)\$(EXECUTABLE) $(OBJECTS) $(A5LINKFLAGS) $(WIN32LINKFLAGS)
+	$(CC) -o $(BINDIR)\$(EXECUTABLE) -L$(LIBS) $(OBJECTS) $(SGLIBFLAGS) $(A5LINKFLAGS) $(WIN32LINKFLAGS)
 
 #header file dependencies
-main.o: character.hpp map2d.hpp
-map2d.o: bounding_box.hpp
-sprite.o: animation.hpp
-character.o: sprite.hpp
-char_2d.o: character.hpp
+main.o: $(INCLUDES)/char_2d.hpp $(INCLUDES)/map2d.hpp
 
 dist: $(EXECUTABLE)
 	$(MKDIR) $(DISTDIR)
